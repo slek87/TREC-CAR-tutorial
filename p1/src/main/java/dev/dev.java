@@ -14,9 +14,9 @@ public class dev {
         final FileInputStream fileInputStream2 = new FileInputStream(new File("train.test200.cbor.paragraphs"));
 
         for(Data.Paragraph p: DeserializeData.iterableParagraphs(fileInputStream2)) {
-        	p.getParaId();
-            p.getTextOnly();
-            System.out.println();
+        	String paraId = p.getParaId();
+            String text = p.getTextOnly();
+            System.out.println("ID " + paraId + "\n" + text + "\n");
         }
 
         System.out.println("\n\n");
