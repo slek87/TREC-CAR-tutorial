@@ -54,7 +54,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>edu.unh.cs.treccar.read_data.ReadDataTest</mainClass>
+                            <mainClass>dev.Assignment1</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
