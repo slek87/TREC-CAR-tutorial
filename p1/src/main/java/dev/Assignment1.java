@@ -32,7 +32,7 @@ public class Assignment1 {
 
 	static final String INDEX_DIR = "lucene_index/dir";
 	static final String CBOR_FILE = "cbor/train.test200.cbor.paragraphs";
-	
+
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
 	private boolean customScore = false;
@@ -56,11 +56,11 @@ public class Assignment1 {
 	}
 
 	public void doSearch(String qstring, int n) throws IOException, ParseException {
-		if ( is == null ) {
+		if (is == null) {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
 		}
-		
-		if ( customScore ) {
+
+		if (customScore) {
 			SimilarityBase mySimiliarity = new SimilarityBase() {
 				protected float score(BasicStats stats, float freq, float docLen) {
 					return freq;
@@ -87,7 +87,7 @@ public class Assignment1 {
 		Query q;
 		TopDocs tds;
 		ScoreDoc[] retDocs;
-		
+
 		System.out.println("Query: " + qstring);
 		q = qp.parse(qstring);
 		tds = is.search(q, n);
@@ -98,8 +98,8 @@ public class Assignment1 {
 			System.out.println("Doc " + i);
 			System.out.println("Score " + tds.scoreDocs[i].score);
 			System.out.println(d.getField("paraid").stringValue());
-			System.out.println(d.getField("parabody").stringValue() + "\n");
-			
+			// System.out.println(d.getField("parabody").stringValue() + "\n");
+
 		}
 	}
 
@@ -110,28 +110,25 @@ public class Assignment1 {
 	public static void main(String[] args) {
 		Assignment1 a = new Assignment1();
 		int topSearch = 10;
-		String[] queryArr = {"power nap benefits", "whale vocalization production of sound", "pokemon puzzle league"};
-		
+		String[] queryArr = { "power nap benefits", "whale vocalization production of sound", "pokemon puzzle league" };
+
 		try {
 			a.indexAllParas();
-			for(String qstring:queryArr) {
+			for (String qstring : queryArr) {
 				a.doSearch(qstring, topSearch);
 			}
-			
+
 			System.out.println(StringUtils.repeat("=", 300));
-			
+
 			a.customerScore(true);
-			for(String qstring:queryArr) {
+			for (String qstring : queryArr) {
 				a.doSearch(qstring, topSearch);
 			}
-			
+
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
+
 	}
 
 }
