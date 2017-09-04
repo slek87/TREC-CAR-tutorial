@@ -6,7 +6,11 @@
 
     <groupId>cs853</groupId>
     <artifactId>p1</artifactId>
+<<<<<<< HEAD
     <version>1.0</version>
+=======
+    <version>1.0-SNAPSHOT</version>
+>>>>>>> refs/remotes/origin/1.0
     <packaging>jar</packaging>
 
     <dependencies>
@@ -43,6 +47,7 @@
     </dependencies>
 
     <build>
+<<<<<<< HEAD
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -77,6 +82,21 @@
             </plugin>
 
         </plugins>
+=======
+    	<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>dev.Assignment1</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+>>>>>>> refs/remotes/origin/1.0
     </build>
 
 
