@@ -40,6 +40,7 @@ public class Assignment1 {
 	public void indexAllParas() throws CborException, IOException {
 		Directory indexdir = FSDirectory.open((new File(INDEX_DIR)).toPath());
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
+		conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 		IndexWriter iw = new IndexWriter(indexdir, conf);
 		for (Data.Paragraph p : DeserializeData.iterableParagraphs(new FileInputStream(new File(CBOR_FILE)))) {
 			this.indexPara(iw, p);
