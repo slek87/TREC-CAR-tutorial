@@ -29,7 +29,7 @@ import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class Assignment1 {
-
+	// test
 	static final String INDEX_DIR = "lucene_index/dir";
 	static final String CBOR_FILE = "cbor/train.test200.cbor.paragraphs";
 	
