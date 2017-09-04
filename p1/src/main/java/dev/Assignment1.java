@@ -35,7 +35,7 @@ public class Assignment1 {
 	
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
-	private boolean customerScore = false;
+	private boolean customScore = false;
 
 	public void indexAllParas() throws CborException, IOException {
 		Directory indexdir = FSDirectory.open((new File(INDEX_DIR)).toPath());
@@ -59,7 +59,7 @@ public class Assignment1 {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
 		}
 		
-		if ( customerScore ) {
+		if ( customScore ) {
 			SimilarityBase mySimiliarity = new SimilarityBase() {
 				protected float score(BasicStats stats, float freq, float docLen) {
 					return freq;
@@ -103,7 +103,7 @@ public class Assignment1 {
 	}
 
 	public void customerScore(boolean custom) throws IOException {
-		customerScore = custom;
+		customScore = custom;
 	}
 
 	public static void main(String[] args) {
