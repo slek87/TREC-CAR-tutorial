@@ -98,7 +98,7 @@ public class Assignment1 {
 			System.out.println("Doc " + i);
 			System.out.println("Score " + tds.scoreDocs[i].score);
 			System.out.println(d.getField("paraid").stringValue());
-			// System.out.println(d.getField("parabody").stringValue() + "\n");
+			System.out.println(d.getField("parabody").stringValue() + "\n");
 
 		}
 	}
