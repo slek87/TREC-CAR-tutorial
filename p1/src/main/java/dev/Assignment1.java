@@ -42,10 +42,15 @@ public class Assignment1 {
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 		conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 		IndexWriter iw = new IndexWriter(indexdir, conf);
+		System.out.println(
+				"[1:1] Use Lucene to create an index of the paragraphs of train.test200.cbor.paragraphs contained in the \\test200\" dataset of the TREC Complex Answer Retrieval data.");
 		for (Data.Paragraph p : DeserializeData.iterableParagraphs(new FileInputStream(new File(CBOR_FILE)))) {
 			this.indexPara(iw, p);
+			System.out.println(p.getParaId());
 		}
 		iw.close();
+		
+		System.out.println("\n" + StringUtils.repeat("=", 128) + "\n");
 	}
 
 	public void indexPara(IndexWriter iw, Data.Paragraph para) throws IOException {
@@ -114,15 +119,20 @@ public class Assignment1 {
 
 		try {
 			a.indexAllParas();
+
+			System.out.println(
+					"[1:2] Run the following queries and list the paragraph IDs and content of the top 10 results.");
 			for (String qstring : queryArr) {
 				a.doSearch(qstring, topSearch);
+				System.out.println("\n" + StringUtils.repeat("=", 128) + "\n");
 			}
 
-			System.out.println(StringUtils.repeat("=", 300));
+			System.out.println("[1:4] Instruct Lucene to use the scoring function used in class.");
 
 			a.customerScore(true);
 			for (String qstring : queryArr) {
 				a.doSearch(qstring, topSearch);
+				System.out.println("\n" + StringUtils.repeat("=", 128) + "\n");
 			}
 
 		} catch (CborException | IOException | ParseException e) {
