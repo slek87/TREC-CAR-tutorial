@@ -113,7 +113,15 @@ public class Assignment2 {
 		customScore = custom;
 	}
 	
-	public void rankParas(Data.Page page, int n) throws IOException, ParseException {
+	/**
+	 * 
+	 * @param page
+	 * @param n
+	 * @param filename
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void rankParas(Data.Page page, int n, String filename) throws IOException, ParseException {
 		if ( is == null ) {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
 		}
@@ -161,12 +169,15 @@ public class Assignment2 {
 			System.out.println("Score " + tds.scoreDocs[i].score);
 			System.out.println(d.getField("paraid").stringValue());
 			System.out.println(d.getField("parabody").stringValue() + "\n");
+			
 			// runFile string format $queryId Q0 $paragraphId $rank $score $teamname-$methodname
 			String runFileString = page.getPageId()+" Q0 "+d.getField("paraid").stringValue()
 					+" "+i+" "+tds.scoreDocs[i].score+" team2-"+method;
 			runStringsForPage.add(runFileString);
 		}
-		FileWriter fw = new FileWriter(Assignment2.OUTPUT_DIR+"/runfile", true);
+		
+		
+		FileWriter fw = new FileWriter(Assignment2.OUTPUT_DIR+"/"+filename, true);
 		for(String runString:runStringsForPage)
 			fw.write(runString+"\n");
 		fw.close();
@@ -214,13 +225,13 @@ public class Assignment2 {
 			String runFileString = "";
 			
 			for(Data.Page page:pagelist){
-				a.rankParas(page, 100);
+				a.rankParas(page, 100, "result-lucene.run");
 			}
 			
 			a.customScore(true);
 			
 			for(Data.Page page:pagelist){
-				a.rankParas(page, 100);
+				a.rankParas(page, 100, "result-custom.run");
 			}
 			
 		} catch (CborException | IOException | ParseException e) {
