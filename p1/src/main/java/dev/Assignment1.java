@@ -31,7 +31,7 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 public class Assignment1 {
 
 	static final String INDEX_DIR = "lucene_index/dir";
-	static final String CBOR_FILE = "cbor/train.test200.cbor.paragraphs";
+	static final String CBOR_FILE = "test200/train.test200.cbor.paragraphs";
 
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
