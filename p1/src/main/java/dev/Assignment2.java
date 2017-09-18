@@ -94,17 +94,17 @@ public class Assignment2 {
 		TopDocs tds;
 		ScoreDoc[] retDocs;
 		
-		System.out.println("Query: " + qstring);
+		// System.out.println("Query: " + qstring);
 		q = qp.parse(qstring);
 		tds = is.search(q, n);
 		retDocs = tds.scoreDocs;
 		Document d;
 		for (int i = 0; i < retDocs.length; i++) {
 			d = is.doc(retDocs[i].doc);
-			System.out.println("Doc " + i);
-			System.out.println("Score " + tds.scoreDocs[i].score);
-			System.out.println(d.getField("paraid").stringValue());
-			System.out.println(d.getField("parabody").stringValue() + "\n");
+			// System.out.println("Doc " + i);
+			// System.out.println("Score " + tds.scoreDocs[i].score);
+			// System.out.println(d.getField("paraid").stringValue());
+			// System.out.println(d.getField("parabody").stringValue() + "\n");
 			
 		}
 	}
@@ -154,7 +154,7 @@ public class Assignment2 {
 		TopDocs tds;
 		ScoreDoc[] retDocs;
 		
-		System.out.println("Query: " + page.getPageName());
+		// System.out.println("Query: " + page.getPageName());
 		q = qp.parse(page.getPageName());
 		tds = is.search(q, n);
 		retDocs = tds.scoreDocs;
@@ -165,10 +165,10 @@ public class Assignment2 {
 			method = "custom";
 		for (int i = 0; i < retDocs.length; i++) {
 			d = is.doc(retDocs[i].doc);
-			System.out.println("Doc " + i);
-			System.out.println("Score " + tds.scoreDocs[i].score);
-			System.out.println(d.getField("paraid").stringValue());
-			System.out.println(d.getField("parabody").stringValue() + "\n");
+			// System.out.println("Doc " + i);
+			// System.out.println("Score " + tds.scoreDocs[i].score);
+			// System.out.println(d.getField("paraid").stringValue());
+			// System.out.println(d.getField("parabody").stringValue() + "\n");
 			
 			// runFile string format $queryId Q0 $paragraphId $rank $score $teamname-$methodname
 			String runFileString = page.getPageId()+" Q0 "+d.getField("paraid").stringValue()
