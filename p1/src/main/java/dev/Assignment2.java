@@ -227,7 +227,7 @@ public class Assignment2 {
 			for(Data.Page page:pagelist){
 				a.rankParas(page, 100, "result-lucene.run");
 			}
-			
+			// comment to check
 			a.customScore(true);
 			
 			for(Data.Page page:pagelist){
