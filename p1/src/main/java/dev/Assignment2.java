@@ -1,11 +1,14 @@
 package dev;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -200,6 +203,34 @@ public class Assignment2 {
 			e.printStackTrace();
 		}
 		return pageList;
+	}
+	public HashMap<String, ArrayList<String>> getQrelsMap(String runPath)
+	{
+		HashMap<String, ArrayList<String>> qRelsMap = new HashMap<String, ArrayList<String>>();
+		try 
+		{
+			BufferedReader br = new BufferedReader(new FileReader(runPath));
+			String line,qid;
+			ArrayList<String> paraList;
+			while((line = br.readLine())!=null)
+			{
+				qid = line.split(" ")[0];
+				if(qRelsMap.keySet().contains(qid))
+					qRelsMap.get(qid).add(line.split(" ")[2]);
+				else
+				{
+					paraList=new ArrayList<String>();
+					paraList.add(line.split(" ")[2]);
+					qRelsMap.put(qid, paraList);
+				}		
+			}	
+		} 
+		catch (IOException e) 
+		{
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return qRelsMap;
 	}
 
 	public static void main(String[] args) {
