@@ -36,7 +36,6 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 import edu.unh.cs.treccar.read_data.DeserializeData.RuntimeCborException;
 
 public class Assignment2 {
-// test comment
 	static final String INDEX_DIR = "lucene_index/dir";
 	static final String CBOR_FILE = "test200/train.test200.cbor.paragraphs";
 	static final String CBOR_OUTLINE = "test200/train.test200.cbor.outlines";
@@ -268,21 +267,64 @@ public class Assignment2 {
 				a.rankParas(page, 100, "result-custom.run");
 			}
 			
+			// Compute Precision@R
 			Assignment2_3 a3 = new Assignment2_3();
 			HashMap<String, Double> lucRprecMap = a3.getPageRprecMap(pagelist, a.getQrelsMap(Assignment2.QRELS_FILE), Assignment2.OUTPUT_DIR+"/result-lucene.run");
 			HashMap<String, Double> customRprecMap = a3.getPageRprecMap(pagelist, a.getQrelsMap(Assignment2.QRELS_FILE), Assignment2.OUTPUT_DIR+"/result-custom.run");
+			
 			System.out.println("\nLucene Rprec scores\n");
 			for(String p:lucRprecMap.keySet())
 				System.out.println(p+" -> "+lucRprecMap.get(p).toString());
+			
 			System.out.println("\nCustom Rprec scores\n");
 			for(String p:customRprecMap.keySet())
 				System.out.println(p+" -> "+customRprecMap.get(p).toString());
+			
+			// Compute Mean Average Precision
+			Assignment2_4 a4 = new Assignment2_4();
+			HashMap<String, ArrayList<String>> luceneMAP = a.getQrelsMap(Assignment2.OUTPUT_DIR+"/result-lucene.run");
+			HashMap<String, ArrayList<String>> customMAP = a.getQrelsMap(Assignment2.OUTPUT_DIR+"/result-custom.run");
+			
+			a4.Precision(customMAP, luceneMAP);
+			
+			System.out.println("\n\nLucene MAP score : \n");
+			{
+				int counter = 0;
+				double ap = 0.0;
+				for(Data.Page p:pagelist)
+				{
+					ap = ap + a4.getPrecision(p.getPageId());
+					counter++;
+				}
+				System.out.println((double)(ap/(double)counter));
+			}
+			
+			System.out.println("\n\nCustom MAP score : \n");
+			{
+				int counter = 0;
+				double ap = 0.0;
+				for(Data.Page p:pagelist)
+				{
+					ap = ap + a4.getPrecision(p.getPageId());
+					counter++;
+				}
+				System.out.println((ap/(double)counter));
+			}
+			
+			
+			// Compute NDCG@20
+			
+			Assignment2_5 a5 = new Assignment2_5();
+			a5.initNDCG(customMAP, luceneMAP);
+			for (Data.Page p:pagelist)
+			{
+				a5.getNDCG20(p.getPageId());
+			}
+			
+			
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
-		}
-		
-		
-		
+		}	
 		
 	}
 
