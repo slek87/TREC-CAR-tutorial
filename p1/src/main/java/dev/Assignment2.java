@@ -41,6 +41,7 @@ public class Assignment2 {
 	static final String CBOR_FILE = "test200/train.test200.cbor.paragraphs";
 	static final String CBOR_OUTLINE = "test200/train.test200.cbor.outlines";
 	static final String OUTPUT_DIR = "output";
+	static final String QRELS_FILE = "test200/train.test200.cbor.article.qrels";
 	
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
@@ -168,10 +169,12 @@ public class Assignment2 {
 			method = "custom";
 		for (int i = 0; i < retDocs.length; i++) {
 			d = is.doc(retDocs[i].doc);
+			/*
 			System.out.println("Doc " + i);
 			System.out.println("Score " + tds.scoreDocs[i].score);
 			System.out.println(d.getField("paraid").stringValue());
 			System.out.println(d.getField("parabody").stringValue() + "\n");
+			*/
 			
 			// runFile string format $queryId Q0 $paragraphId $rank $score $teamname-$methodname
 			String runFileString = page.getPageId()+" Q0 "+d.getField("paraid").stringValue()
@@ -266,8 +269,14 @@ public class Assignment2 {
 			}
 			
 			Assignment2_3 a3 = new Assignment2_3();
-			//HashMap<String, Double> pageRprecMap = a3.getPageRprecMap(pagelist, qrelsMap, runPath);
-			
+			HashMap<String, Double> lucRprecMap = a3.getPageRprecMap(pagelist, a.getQrelsMap(Assignment2.QRELS_FILE), Assignment2.OUTPUT_DIR+"/result-lucene.run");
+			HashMap<String, Double> customRprecMap = a3.getPageRprecMap(pagelist, a.getQrelsMap(Assignment2.QRELS_FILE), Assignment2.OUTPUT_DIR+"/result-custom.run");
+			System.out.println("\nLucene Rprec scores\n");
+			for(String p:lucRprecMap.keySet())
+				System.out.println(p+" -> "+lucRprecMap.get(p).toString());
+			System.out.println("\nCustom Rprec scores\n");
+			for(String p:customRprecMap.keySet())
+				System.out.println(p+" -> "+customRprecMap.get(p).toString());
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
 		}

@@ -14,11 +14,17 @@ public class Assignment2_3
 	private double calculateRprec(ArrayList<String> rel, ArrayList<String> ret)
 	{
 		int r = rel.size();
+		int retsize = ret.size();
 		int count = 0;
-		for(int i=1;i<=r;i++)
+		
+		for(int i=0;i<r;i++){
+			if(retsize<=i)
+				break;
 			if(rel.contains(ret.get(i)))
 				count++;
-		return count/r;
+		}
+		//System.out.println("count: "+count+"relsize: "+r+"retsize: "+retsize);
+		return (double)count/(double)r;
 	}
 	
 	public HashMap<String, Double> getPageRprecMap(ArrayList<Data.Page> pageList, HashMap<String, ArrayList<String>> qrelsMap, String runPath)
@@ -42,7 +48,7 @@ public class Assignment2_3
 						retParaIds.add(line.split(" ")[2]);
 				}
 				rprecScores.put(pageid,calculateRprec(relParaIds, retParaIds));
-				
+				br.close();
 			} 
 			catch (IOException e) 
 			{
