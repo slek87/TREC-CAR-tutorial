@@ -234,6 +234,9 @@ public class Assignment2 {
 				a.rankParas(page, 100, "result-custom.run");
 			}
 			
+			Assignment2_3 a3 = new Assignment2_3();
+			//HashMap<String, Double> pageRprecMap = a3.getPageRprecMap(pagelist, qrelsMap, runPath);
+			
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
 		}
