@@ -34,6 +34,8 @@ public class Assignment2_5 {
 		
 		// calculating dcg@20
 		for (int i = 0; i < 20; i++ ) {
+			if (arrOut == null || arrRel == null)
+				continue;
 			rank++;
 			paraId = arrOut.get(i);
 			if ( arrRel.contains(paraId)) {
@@ -48,6 +50,8 @@ public class Assignment2_5 {
 		rank = 0;
 		// calculating idcg
 		for (int i = 0; i < 20; i++ ) {
+			if (arrOut == null || arrRel == null)
+				continue;
 			paraId = arrOut.get(i);
 			if ( arrRel.contains(paraId)) {
 				rank++;

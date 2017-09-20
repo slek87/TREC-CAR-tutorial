@@ -19,6 +19,9 @@ public class Assignment2_4 {
         int prec = 0;
         String paraId;
         
+        if (arrOut == null || arrRel == null)
+        	return 1.0;
+        
         for (int i = 0; i < arrOut.size(); i++)
         {
             paraId = arrOut.get(i);

@@ -287,7 +287,7 @@ public class Assignment2 {
 			
 			a4.Precision(customMAP, luceneMAP);
 			
-			System.out.println("\n\nLucene MAP score : \n");
+			System.out.println("\n\nMean Average Precision : \n");
 			{
 				int counter = 0;
 				double ap = 0.0;
@@ -299,27 +299,16 @@ public class Assignment2 {
 				System.out.println((double)(ap/(double)counter));
 			}
 			
-			System.out.println("\n\nCustom MAP score : \n");
-			{
-				int counter = 0;
-				double ap = 0.0;
-				for(Data.Page p:pagelist)
-				{
-					ap = ap + a4.getPrecision(p.getPageId());
-					counter++;
-				}
-				System.out.println((ap/(double)counter));
-			}
-			
-			
 			// Compute NDCG@20
-			
+			System.out.println("\n\nNDCG : \n");
 			Assignment2_5 a5 = new Assignment2_5();
 			a5.initNDCG(customMAP, luceneMAP);
 			for (Data.Page p:pagelist)
 			{
-				a5.getNDCG20(p.getPageId());
+				System.out.println(p.getPageId() + " : " + a5.getNDCG20(p.getPageId()));
 			}
+			
+			
 			
 			
 		} catch (CborException | IOException | ParseException e) {
