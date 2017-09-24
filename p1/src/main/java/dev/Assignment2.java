@@ -275,6 +275,7 @@ public class Assignment2 {
 			System.out.println("\nLucene Rprec scores\n");
 			for(String p:lucRprecMap.keySet())
 				System.out.println(p+" -> "+lucRprecMap.get(p).toString());
+				
 			
 			System.out.println("\nCustom Rprec scores\n");
 			for(String p:customRprecMap.keySet())
@@ -289,14 +290,14 @@ public class Assignment2 {
 			
 			System.out.println("\n\nMean Average Precision : \n");
 			{
-				int counter = 0;
-				double ap = 0.0;
+				double map = 0.0;
 				for(Data.Page p:pagelist)
 				{
-					ap = ap + a4.getPrecision(p.getPageId());
-					counter++;
+					double ap = a4.getPrecision(p.getPageId());
+					map = map + ap;
+					System.out.println(p.getPageId() + " : " + ap);
 				}
-				System.out.println((double)(ap/(double)counter));
+				System.out.println("MAP : " + (map / pagelist.size()));
 			}
 			
 			// Compute NDCG@20

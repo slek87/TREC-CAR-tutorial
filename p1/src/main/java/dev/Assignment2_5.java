@@ -37,7 +37,12 @@ public class Assignment2_5 {
 			if (arrOut == null || arrRel == null)
 				continue;
 			rank++;
-			paraId = arrOut.get(i);
+			
+			if (i < arrOut.size())
+				paraId = arrOut.get(i);
+			else
+				continue;
+			
 			if ( arrRel.contains(paraId)) {
 				dcg += 1 / ( Math.log10(rank+1)/Math.log10(2) );
 			}
@@ -52,7 +57,11 @@ public class Assignment2_5 {
 		for (int i = 0; i < 20; i++ ) {
 			if (arrOut == null || arrRel == null)
 				continue;
-			paraId = arrOut.get(i);
+			if (i < arrOut.size())
+				paraId = arrOut.get(i);
+			else
+				continue;
+			
 			if ( arrRel.contains(paraId)) {
 				rank++;
 				idcg += 1 / ( Math.log10(rank+1)/Math.log10(2) );

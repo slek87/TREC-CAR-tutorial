@@ -16,7 +16,10 @@ public class Assignment2_4 {
     public double getPrecision(String docId ){
         ArrayList<String> arrOut = mapOut.get(docId);
         ArrayList<String> arrRel = mapRel.get(docId);
+        
         int prec = 0;
+        double precision = 0.0;
+        
         String paraId;
         
         if (arrOut == null || arrRel == null)
@@ -26,12 +29,13 @@ public class Assignment2_4 {
         {
             paraId = arrOut.get(i);
             if (arrRel.contains(paraId))
+            {
                 prec++;
+                precision += prec / (i + 1);
+            }
         }
         
-        double precision = (double)prec/arrOut.size();
-        // System.out.println(precision);
+        precision = precision / arrOut.size();
         return precision;
-
     }
 }
