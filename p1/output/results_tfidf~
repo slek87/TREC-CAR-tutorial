@@ -1,0 +1,36 @@
+lnc.ltn
+
+runid                 	all	team2-custom
+num_q                 	all	196
+num_ret               	all	10336
+num_rel               	all	4669
+num_rel_ret           	all	2901
+map                   	all	0.5228
+gm_map                	all	0.4301
+Rprec                 	all	0.5229
+bpref                 	all	0.6432
+recip_rank            	all	0.9571
+iprec_at_recall_0.00  	all	0.9659
+iprec_at_recall_0.10  	all	0.9044
+iprec_at_recall_0.20  	all	0.8253
+iprec_at_recall_0.30  	all	0.7414
+iprec_at_recall_0.40  	all	0.6428
+iprec_at_recall_0.50  	all	0.5679
+iprec_at_recall_0.60  	all	0.4742
+iprec_at_recall_0.70  	all	0.3640
+iprec_at_recall_0.80  	all	0.2282
+iprec_at_recall_0.90  	all	0.0829
+iprec_at_recall_1.00  	all	0.0375
+P_5                   	all	0.8255
+P_10                  	all	0.7051
+P_15                  	all	0.5973
+P_20                  	all	0.5087
+P_30                  	all	0.3884
+P_100                 	all	0.1480
+P_200                 	all	0.0740
+P_500                 	all	0.0296
+P_1000                	all	0.0148
+
+bnn.bnn
+
+
