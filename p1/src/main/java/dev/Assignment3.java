@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -34,7 +36,7 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 import edu.unh.cs.treccar.read_data.DeserializeData.RuntimeCborException;
 
 public class Assignment3 {
-// test comment
+
 	static final String INDEX_DIR = "lucene_index/dir";
 	static final String CBOR_FILE = "test200/train.test200.cbor.paragraphs";
 	static final String CBOR_OUTLINE = "test200/train.test200.cbor.outlines";
@@ -98,67 +100,12 @@ public class Assignment3 {
 		paradoc.add(new TextField("parabody", para.getTextOnly(), Field.Store.YES));
 		iw.addDocument(paradoc);
 	}
-	/*
 
-	public void doSearch(String qstring, int n) throws IOException, ParseException {
-		if ( is == null ) {
-			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
-		}
-		
-		if ( customScore ) {
-			SimilarityBase mySimiliarity = new SimilarityBase() {
-				protected float score(BasicStats stats, float freq, float docLen) {
-					return freq;
-				}
-
-				@Override
-				public String toString() {
-					return null;
-				}
-			};
-			is.setSimilarity(mySimiliarity);
-		}
-
-		/*
-		 * The first arg of QueryParser constructor specifies which field of document to
-		 * match with query, here we want to search in the para text, so we chose
-		 * parabody.
-		 * 
-		 */
-	/*
-		if (qp == null) {
-			qp = new QueryParser("parabody", new StandardAnalyzer());
-		}
-
-		Query q;
-		TopDocs tds;
-		ScoreDoc[] retDocs;
-		
-		System.out.println("Query: " + qstring);
-		q = qp.parse(qstring);
-		tds = is.search(q, n);
-		retDocs = tds.scoreDocs;
-		Document d;
-		for (int i = 0; i < retDocs.length; i++) {
-			d = is.doc(retDocs[i].doc);
-			System.out.println("Doc " + i);
-			System.out.println("Score " + tds.scoreDocs[i].score);
-			System.out.println(d.getField("paraid").stringValue());
-			System.out.println(d.getField("parabody").stringValue() + "\n");
-			
-		}
-	}
-
-	public void customScore(boolean custom) throws IOException {
-		customScore = custom;
-	}
-	*/
 	public void rankParas(Data.Page page, int n, int tfidf) throws IOException, ParseException {
 		if ( is == null ) {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
 		}
 		
-
 		/*
 		 * The first arg of QueryParser constructor specifies which field of document to
 		 * match with query, here we want to search in the para text, so we chose
@@ -298,6 +245,9 @@ public class Assignment3 {
 			
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
-		}			
+		}
+				
+		// Spearman Coefficient computation		
+		new SpearmanCoefficient();		
 	}
 }
