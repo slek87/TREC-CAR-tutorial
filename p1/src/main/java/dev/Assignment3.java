@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -38,8 +39,10 @@ public class Assignment3 {
 	static final String CBOR_FILE = "test200/train.test200.cbor.paragraphs";
 	static final String CBOR_OUTLINE = "test200/train.test200.cbor.outlines";
 	static final String OUTPUT_DIR = "output";
-	static final String LUCENE_OUT = "lucene_tfidf_run";
+	static final String LUCENE_OUT = "lucene_tfidf_run2";
 	static final String CUSTOM_OUT = "custom_tfidf_bnnbnn_run";
+	static final String LUCENE_OUT_SEC = "lucene_tfidf_sec_run";
+	static final String CUSTOM_OUT_SEC = "custom_tfidf_sec_lncltn_run";
 	
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
@@ -202,6 +205,59 @@ public class Assignment3 {
 		fw.close();
 	}
 	
+	public void rankParasUsingSections(Data.Page page, Data.Section section, String parentId, int n, int tfidf) throws IOException, ParseException {
+		if ( is == null ) {
+			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
+		}
+		
+
+		/*
+		 * The first arg of QueryParser constructor specifies which field of document to
+		 * match with query, here we want to search in the para text, so we chose
+		 * parabody.
+		 * 
+		 */
+		if (qp == null) {
+			qp = new QueryParser("parabody", new StandardAnalyzer());
+		}
+
+		String qString = parentId+"/"+section.getHeadingId();
+		Query q;
+		TopDocs tds;
+		ScoreDoc[] retDocs;
+		
+		q = qp.parse(qString.replaceAll("\\W", " "));
+		System.out.println("Query: " + qString);
+		if(customScore)
+			is.setSimilarity(this.getCustomSimilarity(tfidf));
+		tds = is.search(q, n);
+		retDocs = tds.scoreDocs;
+		Document d;
+		ArrayList<String> runStringsForPage = new ArrayList<String>();
+		String method = "lucene_sec";
+		String outfile = Assignment3.LUCENE_OUT_SEC;
+		if(customScore){
+			method = "custom_sec";
+			outfile = Assignment3.CUSTOM_OUT_SEC;
+		}
+		for (int i = 0; i < retDocs.length; i++) {
+			d = is.doc(retDocs[i].doc);
+			System.out.println("Doc " + i);
+			System.out.println("Score " + tds.scoreDocs[i].score);
+			//System.out.println(d.getField("paraid").stringValue());
+			//System.out.println(d.getField("parabody").stringValue() + "\n");
+			// runFile string format $queryId Q0 $paragraphId $rank $score $teamname-$methodname
+			String runFileString = qString+" Q0 "+d.getField("paraid").stringValue()
+					+" "+i+" "+tds.scoreDocs[i].score+" team2-"+method;
+			runStringsForPage.add(runFileString);
+		}
+		
+		FileWriter fw = new FileWriter(Assignment3.OUTPUT_DIR+"/"+outfile, true);
+		for(String runString:runStringsForPage)
+			fw.write(runString+"\n");
+		fw.close();
+	}
+	
 	//public HashMap<String, double> getPageRprecMap();
 	
 	public ArrayList<Data.Page> getPageListFromPath(String path){
@@ -224,19 +280,24 @@ public class Assignment3 {
 		Assignment3 a = new Assignment3();
 		
 		try {
-			a.indexAllParas(3);
+			a.indexAllParas(1); // tfidf for documents 1st one
 			ArrayList<Data.Page> pagelist = a.getPageListFromPath(Assignment3.CBOR_OUTLINE);
+			String parentId = "";
 			for(Data.Page page:pagelist){
-				a.rankParas(page, 100, 3);
+				//a.rankParas(page, 100, 3);
+				parentId = page.getPageId();
+				for(Data.Section secL1:page.getChildSections()){
+					a.rankParasUsingSections(page, secL1, parentId, 100, 2);
+					parentId = parentId+"/"+secL1.getHeadingId();
+					for(Data.Section secL2:secL1.getChildSections()){
+						a.rankParasUsingSections(page, secL2, parentId, 100, 2);
+					}
+				}
+					//a.rankParasUsingSections(page, sec, 100, 3); // tfidf for queries 2nd one
 			}
 			
 		} catch (CborException | IOException | ParseException e) {
 			e.printStackTrace();
-		}
-		
-		
-		
-		
+		}			
 	}
-
 }
