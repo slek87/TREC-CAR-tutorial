@@ -318,17 +318,22 @@ public class XX
 								vector = getLogTermFreq(vector);
 								int n = getTotalDocs();
 								String words[]=query.split(" ");
-								for (Data.Paragraph p : DeserializeData.iterableParagraphs(new FileInputStream(new File(CBOR_PARA))))
-								{
-									count++;
-									for(String w:words)
-										docFreq.add(getDocumentFrequency(count,w));
-									
+								try {
+									for (Data.Paragraph p : DeserializeData.iterableParagraphs(new FileInputStream(new File(CBOR_PARA))))
+									{
+										count++;
+										for(String w:words)
+											docFreq.add(getDocumentFrequency(count,w));
+										
+									}
+								} catch (CborException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
 								for(long i:docFreq)
 								{
 									System.out.println(i);
-									br.readLine();
+									// br.readLine();
 								}
 									
 							}
