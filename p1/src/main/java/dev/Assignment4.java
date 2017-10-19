@@ -41,7 +41,6 @@ public class Assignment4 {
 	private QueryParser qp = null;
 	private static int SMOOTHING = 3;
 	private static final String OUTPUT_DIR = "output_lm";
-	
 	public SimilarityBase getCustomSimilarity(int smoothing, int vocabSize, float lambda, float mu){
 		LMSimilarity mySimiliarity = new LMSimilarity() {
 			
@@ -57,10 +56,11 @@ public class Assignment4 {
 					break;
 				case 3://Dirichlet
 					score = getDirichletSmoothedScore(freq, docLen, mu, (LMSimilarity.LMStats)stats);
+					//System.out.println("Vocab size is: "+vocabSize+" right?");
 					break;
-				//case 4:
-					
-				//case 5:
+				case 4://Bigram with Laplace (B-L):
+					score = getBigramWithLaplaceSmoothedScore(freq, docLen, vocabSize);
+					break;
 				}
 				return score;
 			}
@@ -94,6 +94,12 @@ public class Assignment4 {
 	public float getDirichletSmoothedScore(float termFreq, float docLength, float mu, LMSimilarity.LMStats stats){
 		float score;
 		score = (termFreq+mu*stats.getCollectionProbability()) / (docLength + mu);
+		return score;
+	}
+	
+	public float getBigramWithLaplaceSmoothedScore(float termFreq, float docLength, long vocabSize){
+		float score = 0;
+		score = (docLength+vocabSize);//(term-1 and term) freq
 		return score;
 	}
 	
