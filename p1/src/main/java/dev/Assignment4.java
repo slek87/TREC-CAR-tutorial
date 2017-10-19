@@ -1,6 +1,7 @@
 package dev;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,10 +10,14 @@ import java.util.ArrayList;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.codecs.lucene54.Lucene54DocValuesFormat;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.Fields;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.MultiFields;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -108,7 +113,20 @@ public class Assignment4 {
 	
 	public int getVocabSize(IndexReader rd){
 		int vsize = 0;
-		
+		try {
+			Fields fields = MultiFields.getFields(rd);
+			for (String field:fields)
+			{
+				Terms terms = fields.terms(field);
+				TermsEnum termsEnum = terms.iterator();
+				while (termsEnum.next() != null)
+					vsize++;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Vocabulary size : " + vsize);
 		return vsize;
 	}
 	
