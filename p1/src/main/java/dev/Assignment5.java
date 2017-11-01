@@ -17,6 +17,7 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class Assignment5 {
 	Assignment4 a4Laplace, a4JMS, a4Dir;
+	Assignment3 lnc_ltn;
 	ArrayList<Data.Page> pagelist;
 	public static final String RLOUTPUT = "output_lm/ranklib_output";
 	public void doStuff() throws ParseException{
@@ -24,6 +25,7 @@ public class Assignment5 {
 		a4Laplace = new Assignment4(1);
 		a4JMS = new Assignment4(2);
 		a4Dir = new Assignment4(3);
+		lnc_ltn = new Assignment3();
 		try {
 			a4Laplace.indexAllParas();
 			a4JMS.indexAllParas();
@@ -33,6 +35,7 @@ public class Assignment5 {
 				a4Laplace.rankParas(p, 10, "a5laplace");
 				a4JMS.rankParas(p, 10, "a5jms");
 				a4Dir.rankParas(p, 10, "a5dir");
+				lnc_ltn.rankParas(p, 10, 1);
 			}
 		} catch (CborException | IOException e) {
 			// TODO Auto-generated catch block
@@ -98,7 +101,7 @@ public class Assignment5 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Assignment5 a5 = new Assignment5();
-		String[] runs = {"output_lm/a5laplace", "output_lm/a5jms", "output_lm/a5dir"};
+		String[] runs = {"output_lm/a5laplace", "output_lm/a5jms", "output_lm/a5dir", "output_lm/lnc_ltn"};
  		try {
  			FileWriter fw = new FileWriter(Assignment5.RLOUTPUT, true);
 			a5.doStuff();
