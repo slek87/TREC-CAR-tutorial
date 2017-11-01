@@ -39,8 +39,11 @@ public class Assignment4 {
 	
 	private IndexSearcher is = null;
 	private QueryParser qp = null;
-	private static int SMOOTHING = 3;
+	private int smoothing = 3;
 	private static final String OUTPUT_DIR = "output_lm";
+	public Assignment4(int sm){
+		this.smoothing = sm;
+	}
 	public SimilarityBase getCustomSimilarity(int smoothing, int vocabSize, float lambda, float mu){
 		LMSimilarity mySimiliarity = new LMSimilarity() {
 			
@@ -136,7 +139,7 @@ public class Assignment4 {
 		return vsize;
 	}
 	
-	public void rankParas(Data.Page page, int n) throws IOException, ParseException {
+	public void rankParas(Data.Page page, int n, String out) throws IOException, ParseException{
 		if ( is == null ) {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open(
 					(new File(Assignment3.INDEX_DIR).toPath()))));
@@ -162,13 +165,13 @@ public class Assignment4 {
 		System.out.println("Query: " + page.getPageName());
 		q = qp.parse(page.getPageName());
 		vocabSize = getVocabSize(is.getIndexReader());
-		is.setSimilarity(this.getCustomSimilarity(Assignment4.SMOOTHING, vocabSize, 0.9f, 1000));
+		is.setSimilarity(this.getCustomSimilarity(this.smoothing, vocabSize, 0.9f, 1000));
 		tds = is.search(q, n);
 		retDocs = tds.scoreDocs;
 		Document d;
 		ArrayList<String> runStringsForPage = new ArrayList<String>();
-		String method = "customLM"+Assignment4.SMOOTHING;
-		String outfile = Assignment3.CUSTOM_OUT;
+		String method = "customLM"+this.smoothing;
+		String outfile = out;
 		
 		for (int i = 0; i < retDocs.length; i++) {
 			d = is.doc(retDocs[i].doc);
@@ -185,10 +188,14 @@ public class Assignment4 {
 			fw.write(runString+"\n");
 		fw.close();
 	}
+	
+	public void rankParas(Data.Page page, int n) throws IOException, ParseException {
+		this.rankParas(page, n, Assignment3.CUSTOM_OUT);
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Assignment4 a4 = new Assignment4();
+		Assignment4 a4 = new Assignment4(3);
 		Assignment3 a3 = new Assignment3();
 		try {
 			a4.indexAllParas();
