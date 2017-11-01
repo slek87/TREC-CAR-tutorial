@@ -18,6 +18,8 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 public class Assignment5 {
 	Assignment4 a4Laplace, a4JMS, a4Dir;
 	Assignment3 lnc_ltn;
+	//Assignment3 bnn_bnn;
+	
 	ArrayList<Data.Page> pagelist;
 	public static final String RLOUTPUT = "output_lm/ranklib_output";
 	public void doStuff() throws ParseException{
@@ -26,6 +28,7 @@ public class Assignment5 {
 		a4JMS = new Assignment4(2);
 		a4Dir = new Assignment4(3);
 		lnc_ltn = new Assignment3();
+		//bnn_bnn = new Assignment3();
 		try {
 			a4Laplace.indexAllParas();
 			a4JMS.indexAllParas();
@@ -36,6 +39,7 @@ public class Assignment5 {
 				a4JMS.rankParas(p, 10, "a5jms");
 				a4Dir.rankParas(p, 10, "a5dir");
 				lnc_ltn.rankParas(p, 10, 1);
+				//bnn_bnn.rankParas(p, 10, "a5bnn_bnn");
 			}
 		} catch (CborException | IOException e) {
 			// TODO Auto-generated catch block
@@ -78,6 +82,7 @@ public class Assignment5 {
 				fetValString = "";
 				target = 0;
 				for(int i=0; i<runfiles.length; i++){
+				//for(int i=1; i<=runfiles.length; i++){
 					rank = this.getRank(qid, para.getParaId(), runfiles[i]);
 					if(rank > 0){
 						v[i] = 1.0/(double)rank;
@@ -102,6 +107,7 @@ public class Assignment5 {
 		// TODO Auto-generated method stub
 		Assignment5 a5 = new Assignment5();
 		String[] runs = {"output_lm/a5laplace", "output_lm/a5jms", "output_lm/a5dir", "output_lm/lnc_ltn"};
+		//String[] runs = {"output_lm/a5laplace", "output_lm/a5jms", "output_lm/a5dir", "output_lm/lnc_ltn", "output_lm/a5bnn_bnn"};
  		try {
  			FileWriter fw = new FileWriter(Assignment5.RLOUTPUT, true);
 			a5.doStuff();
