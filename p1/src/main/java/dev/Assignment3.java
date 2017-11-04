@@ -101,7 +101,7 @@ public class Assignment3 {
 		iw.addDocument(paradoc);
 	}
 
-	public void rankParas(Data.Page page, int n, int tfidf) throws IOException, ParseException {
+	public void rankParas(Data.Page page, int n, int tfidf, String outfilePath) throws IOException, ParseException {
 		if ( is == null ) {
 			is = new IndexSearcher(DirectoryReader.open(FSDirectory.open((new File(INDEX_DIR).toPath()))));
 		}
@@ -129,10 +129,13 @@ public class Assignment3 {
 		Document d;
 		ArrayList<String> runStringsForPage = new ArrayList<String>();
 		String method = "lucene";
-		String outfile = Assignment3.LUCENE_OUT;
-		if(customScore){
-			method = "custom";
-			outfile = Assignment3.CUSTOM_OUT;
+		if(outfilePath == null){
+			String outfile = Assignment3.LUCENE_OUT;
+			if(customScore){
+				method = "custom";
+				outfile = Assignment3.CUSTOM_OUT;
+			}
+			outfilePath = Assignment3.OUTPUT_DIR+"/"+outfile;
 		}
 		for (int i = 0; i < retDocs.length; i++) {
 			d = is.doc(retDocs[i].doc);
@@ -146,7 +149,7 @@ public class Assignment3 {
 			runStringsForPage.add(runFileString);
 		}
 		
-		FileWriter fw = new FileWriter(Assignment3.OUTPUT_DIR+"/"+outfile, true);
+		FileWriter fw = new FileWriter(outfilePath, true);
 		for(String runString:runStringsForPage)
 			fw.write(runString+"\n");
 		fw.close();
