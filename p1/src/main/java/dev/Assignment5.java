@@ -22,7 +22,34 @@ public class Assignment5 {
 	//Assignment3 bnn_bnn;
 	
 	ArrayList<Data.Page> pagelist;
+	HashMap<String, ArrayList<String>> relevanceMap = getRelevanceMapFromQrels("output_lm/article.qrels");
 	public static final String RLOUTPUT = "output_lm/ranklib_output";
+	
+	public HashMap<String, ArrayList<String>> getRelevanceMapFromQrels(String qrelsPath){
+		HashMap<String, ArrayList<String>> relMap = new HashMap<String, ArrayList<String>>();
+		BufferedReader br;
+		try{
+			br = new BufferedReader(new FileReader(qrelsPath));
+			String line, paraid, pageid;
+			String[] lineData = new String[4];
+			while((line = br.readLine()) != null){
+				pageid = line.split(" ")[0];
+				paraid = line.split(" ")[2];
+				if(relMap.keySet().contains(pageid)){
+					relMap.get(pageid).add(paraid);
+				}
+				else{
+					ArrayList<String> paralist = new ArrayList<String>();
+					paralist.add(paraid);
+					relMap.put(pageid, paralist);
+				}
+			}
+			br.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return relMap;
+	}
 	
 	public ArrayList<String> getUniqueParaIds(String[] runfiles){
 		ArrayList<String> paraids = new ArrayList<String>();
@@ -96,29 +123,7 @@ public class Assignment5 {
 		}
 		return runfileMap;
 	}
-	public double findFeatureValue(String ranking[],int num)
-	{
-		double[] v = new double[12];
-		int target = 0;
-		String feature = new String();
-		for(int i=1;i<=12;i++)
-		{
-			String document = "D"+i;
-			for(int j=0;j<ranking.length;j++)
-			{
-				if(document.equals(ranking[j]))
-				{
-					v[i] = 1.0/(double)j;
-					if(isRelevant(document))
-						target = 1;
-				}
-				else
-					v[i] = 0;
-			}
-		}
-		feature = feature+" "+num+":"+v[i];
-		return v;
-	}
+	
 	public int getRank(String q, String d, HashMap<String, ArrayList<String>> map){
 		
 		return map.get(q).indexOf(d);
@@ -146,33 +151,28 @@ public class Assignment5 {
 		for(Data.Page p:pagelist){
 			qid = p.getPageId();
 			System.out.println(qid);
-			int linecount = 1;
 			// Do not take all the paras, take only those relevant to the current page
 			for(String paraid:uniqueParaIds){
 				fetValString = "";
-				target = 0;
+				if(this.relevanceMap.get(qid).contains(paraid))
+					target = 1;
+				else
+					target = -1;
 				for(int i=0; i<runfiles.length; i++){
 					//for(int i=1; i<=runfiles.length; i++){
-					if(runMaps.get(i).keySet().contains(qid)){
+					rank = -1;
+					if(runMaps.get(i).keySet().contains(qid))
 						rank = this.getRank(qid, paraid, runMaps.get(i));
-						if(rank > 0){
-							v[i] = 1.0/(double)rank;
-							target = 1;
-						}
-						else{
-							v[i] = 0;
-						}
-						fetValString = fetValString+" "+(i+1)+":"+v[i];
-					}
+					if(rank > 0)
+						v[i] = 1.0/(double)rank;
+					else
+						v[i] = 0;
+					fetValString = fetValString+" "+(i+1)+":"+v[i];
 				}
-				if(target > 0){
-					ranklibString = target+" qid:"+(qid+fetValString)+" #"+paraid;
-					rlibStrings.add(ranklibString);
-					linecount++;
-					System.out.println(ranklibString);
-					if(linecount>9)
-						break;
-				}
+				ranklibString = target+" qid:"+(qid+fetValString)+" #"+paraid;
+				rlibStrings.add(ranklibString);
+				
+				System.out.println(ranklibString);
 			}
 		}
 		return rlibStrings;
