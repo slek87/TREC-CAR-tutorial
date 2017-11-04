@@ -96,7 +96,29 @@ public class Assignment5 {
 		}
 		return runfileMap;
 	}
-	
+	public double findFeatureValue(String ranking[],int num)
+	{
+		double[] v = new double[12];
+		int target = 0;
+		String feature = new String();
+		for(int i=1;i<=12;i++)
+		{
+			String document = "D"+i;
+			for(int j=0;j<ranking.length;j++)
+			{
+				if(document.equals(ranking[j]))
+				{
+					v[i] = 1.0/(double)j;
+					if(isRelevant(document))
+						target = 1;
+				}
+				else
+					v[i] = 0;
+			}
+		}
+		feature = feature+" "+num+":"+v[i];
+		return v;
+	}
 	public int getRank(String q, String d, HashMap<String, ArrayList<String>> map){
 		
 		return map.get(q).indexOf(d);
