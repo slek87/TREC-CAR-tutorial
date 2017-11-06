@@ -61,7 +61,7 @@
 						<configuration>
 							<archive>
 								<manifest>
-									<mainClass>dev.Assignment3</mainClass>
+									<mainClass>dev.Assignment5</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>
